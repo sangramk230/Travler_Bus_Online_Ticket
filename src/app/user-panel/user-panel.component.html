@@ -1,0 +1,152 @@
+<body>
+  <nav>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab">Bus Pass</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab"  (click)="toggleAddTicket()">Buy</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab"  (click)="toggleview()" >Show</a>
+      </li> 
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab"  (click)="toggleProfile()" >Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/login" >Logout</a>
+      </li>
+    </ul>
+  </nav>
+  <p class="text-right">{{ currentDate }}</p>
+
+  <div class="container-table" *ngIf="showFirstDiv">
+    <tr *ngFor="let ticketDetail of tt">
+      <th>
+        <p>Bus No: {{ ticketDetail.checkbus.busno }}</p>
+        <p>Contact: {{ ticketDetail.checkbus.contact }}</p>
+        <p>Pass Id: {{ ticketDetail.ticket.pid }}</p>
+        <p>From: {{ ticketDetail.ticket.firstlocation }}</p>
+        <p>To: {{ ticketDetail.ticket.lastlocation }}</p>
+        <p>Bus Type: {{ ticketDetail.ticket.bustype }}</p>
+        <p>Date: {{ ticketDetail.ticket.date }}</p>
+        <p>No. of Seats: {{ ticketDetail.ticket.addseat }}</p>
+        <p>Price: {{ ticketDetail.ticket.price }}</p>
+        <p [ngClass]="{
+          invalid:
+            ticketDetail.ticket.status === 'Invalid',valid: ticketDetail.ticket.status === 'Valid'
+        }">
+      Valid: {{ ticketDetail.ticket.status }}
+    </p>
+        <p [ngClass]="{
+              rejected: ticketDetail.ticket.checkstatus === 'Rejected',
+              approved: ticketDetail.ticket.checkstatus === 'Approved'
+            }">
+          Status: {{ ticketDetail.ticket.checkstatus }}
+        </p>
+        <input type="button" value="Cancel" class="ticket-button" (click)="cancelTicket(ticketDetail.ticket.pid)" />
+      </th>
+    </tr>
+  </div>
+  <div *ngIf="showThirdDiv">
+    <div class="checbus-container" *ngIf="ch">
+      <select id="from" name="from" [(ngModel)]="ticketAll.firstlocation">
+        <option value="" disabled selected hidden>From</option>
+        <option *ngFor="let location of locations" [value]="location">
+          {{ location }}
+        </option>
+      </select>
+      <select name="to" [(ngModel)]="ticketAll.lastlocation">
+        <option value="" disabled selected hidden>To</option>
+        <option *ngFor="let location of locations" [value]="location">
+          {{ location }}
+        </option>
+      </select>
+      <select [(ngModel)]="ticketAll.bustype">
+        <option value="" disabled selected hidden>Type</option>
+        <option>Ac</option>
+        <option>Non-Ac</option>
+      </select>
+      <input type="button" value="Check" class="checbus-container-button" (click)="
+            checkSeat(
+              ticketAll.firstlocation,
+              ticketAll.lastlocation,
+              ticketAll.bustype
+            )
+          " />
+    </div>
+    <div class="container" *ngIf="!ch && checkbus.avilableseat > 0">
+      <table>
+        <h3>Available Ticket</h3>
+        <tr *ngIf="checkbus">
+          <td>
+            <p>Available Seat: {{ checkbus.avilableseat }}</p>
+            <p>Price: {{ ticketAll.price }}</p>
+            <p>From: {{ ticketAll.firstlocation }}</p>
+            <p>To: {{ ticketAll.lastlocation }}</p>
+            <p>Ac/Non-Ac: {{ ticketAll.bustype }}</p>
+            <p>Date:{{ ticketAll.date }}</p>
+            <p>Add Seat:</p>
+            <input type="number" [(ngModel)]="ticketAll.addseat" (input)="updatePrice()" />
+            <input [(ngModel)]="ticketAll.price" hidden disabled /><br />
+            <input type="button" value="Book" class="ticket-button"
+              (click)="createTicketTranscation(ticketAll.price)" />
+            <input type="button" value="Cancel" class="ticket-button" (click)="toggleAddTicket()" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="container-table" *ngIf="checkbus && showSecondDiv && ch">
+    <tr *ngFor="let ticketDetail of checkbusAll.slice(0, 6)">
+      <th *ngIf="
+            ticketDetail.avilableseat > 0 && ticketDetail.status !== 'Invalid'
+          ">
+        <img src="/assets/table.png" />
+        <p>Seats: {{ ticketDetail.avilableseat }}</p>
+        <p>From: {{ ticketDetail.firstlocation }}</p>
+        <p>To: {{ ticketDetail.lastlocation }}</p>
+        <p>Bus Type: {{ ticketDetail.bustype }}</p>
+        <p>Date: {{ ticketDetail.date }}</p>
+        <p>Price: {{ ticketDetail.price }}</p>
+        <p [ngClass]="{
+              invalid:
+                ticketDetail.status === 'Invalid',valid: ticketDetail.status === 'Valid'
+            }">
+          Valid: {{ ticketDetail.status }}
+        </p>
+        <input type="button" value="Buy" class="ticket-button" (click)="
+              checkSeat(
+                ticketDetail.firstlocation,
+                ticketDetail.lastlocation,
+                ticketDetail.bustype
+              )
+            " />
+      </th>
+    </tr>
+  </div>
+  <div *ngIf="showSixDiv" >
+    <div class="right" *ngIf="uy">
+        <label class="greyText">My Profile</label>
+        <div class="personal">
+          <p>Name : {{ uy[0].name }}</p>
+          <p>Gender : {{ uy[0].gender }}</p>
+          <p>Date of Birth : {{ uy[0].dob }}</p>
+        </div>
+        <fieldset>
+          <legend>SECURITY DETAILS</legend>
+        </fieldset>
+        <div class="security">
+          <p>Password : {{ uy[0].password }}</p>
+        </div>
+        <fieldset>
+          <legend>CONTACT DETAILS</legend>
+        </fieldset>
+        <div class="contacts">
+          <p class="email">Email : {{ uy[0].email }}</p>
+          <p class="contact">Contact : {{ uy[0].phoneno }}</p>
+        </div>
+      </div>
+    </div>
+</body>

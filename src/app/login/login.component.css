@@ -1,0 +1,33 @@
+/* Global Styles */
+*{margin:0;padding:0;text-align:center;font-family:"Lucida Sans","Lucida Sans Regular","Lucida Grande","Lucida Sans Unicode",Geneva,Verdana,sans-serif;outline:none}
+body{background-repeat:no-repeat;background-size:cover;min-width:100%;min-height:100vh;background-color:aliceblue}
+
+/* Navbar Styles */
+nav{display:flex;justify-content:space-between;align-items:center;padding:10px}
+.logo{margin-left:20px;margin-top:15px;font-size:12px;font-weight:600}
+ul{list-style:none;display:flex;flex-wrap:wrap;justify-content:center}
+li{padding:10px}
+li a{color:#1ddd60;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:0.7px;transition:all 0.3s ease-in-out}
+li a.active,li a:hover{color:#ed9c62}
+
+/* Form Styles */
+.add-bus-form-signup,.add-bus-form{margin:2vw auto;padding:1vw;width:90%;max-width:30vw;border:1px solid #f8e5d0;border-radius:10px}
+.add-bus-form-signup label,.add-bus-form label{display:block;color:#565353;margin-top:5px;font-size:12px;font-weight:bold}
+.add-bus-form-signup input,.add-bus-form-signup select,.add-bus-form input[type="password"],.add-bus-form input[type="date"],.add-bus-form input[type="text"]{background-color:rgb(from color r g b);text-align:center;font-size:12px;width:80%;margin:5px auto;padding:10px;border:none;border-bottom:2px solid #1ddd60;border-radius:5px;box-sizing:border-box}
+button{width:40%;height:40px;background-color:#ff7200;border:none;margin-top:20px;font-size:18px;border-radius:10px;cursor:pointer;color:#fff;transition:background-color 0.3s ease}
+button:hover{background-color:#fff;color:#ff7200}
+.login,.sign-up{color:#fff;text-decoration:none;font-size:0.8em;transition:all 0.3s ease-in-out}
+.login:hover,.sign-up:hover{color:#ed9c62;cursor:pointer}
+
+/* Text Styles */
+p{color:#121312;font-weight:bold;font-size:12px}
+/*password*/
+.password-wrapper{position:relative;display:inline-block}
+.toggle-password{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#1ddd60;cursor:pointer}
+
+/*Date*/
+.text-right{font-size:14px;text-align:right;margin-right:2.5vw;transition:margin-right 0.3s ease-in-out}
+
+/* Responsive Styles */
+@media (max-width:1080px){.add-bus-form-signup,.add-bus-form{width:90%;max-width:90%}.logo{font-size:10px}li a{font-size:10px}.text-right{margin-right:2.5vw}}
+@media (max-width:480px){nav{flex-direction:column}.logo{margin:8px 0}ul{flex-direction:column}li{width:100%;text-align:center}li a{font-size:14px}button{width:80%}.text-right{margin-right:5vw;font-size:12px}}

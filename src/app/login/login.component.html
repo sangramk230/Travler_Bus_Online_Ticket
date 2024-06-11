@@ -1,0 +1,100 @@
+<body >
+    <nav>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#home">Bus Pass</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab"  (click)="toggleAdmin()">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab"  (click)="toggleLogin()" >User</a>
+        </li> 
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab"  href="#home" >Help</a>
+        </li>
+      </ul>
+    </nav>
+
+    <p class="text-right" >{{currentDate}}</p>
+
+    <div class="add-bus-form-signup" *ngIf="signupDiv">
+        <label style="text-align: center;font-size:1.1em ;">Signup</label>
+      <input
+        type="text"
+        placeholder="Enter Full Name"
+        name="name"
+        [(ngModel)]="user.name"
+      />
+
+      <select [(ngModel)]="user.gender">
+        <option value="" disabled selected hidden>Enter Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+
+      <label>Date Of Birth</label>
+      <input
+        type="date"
+        placeholder="Enter Date of Birth"
+        name="dob"
+        [(ngModel)]="user.dob"
+      />
+
+      <input
+        type="text"
+        placeholder="Enter Email"
+        name="email"
+        [(ngModel)]="user.email"
+      /><br />
+
+      <label>Enter Phone No</label>
+      <input
+        type="tel"
+        value=""
+        name="phoneno"
+        [(ngModel)]="user.phoneno"
+      /><br />
+
+      <label> Password </label>
+      <input
+        type="password"
+        placeholder="Enter Password"
+        name="password"
+        [(ngModel)]="user.password"
+      />
+      <input
+        type="password"
+        placeholder="Enter Confirm Password"
+        name="confirmPassword"
+        [(ngModel)]="user.confirmPassword"
+      />
+      <button (click)="signup()">Signup</button>
+      <br />
+      <p>Already have an account?</p>
+      <a class="login" (click)="toggleLogin()">Login</a>
+    </div>
+
+    <div class="add-bus-form" *ngIf="loginDiv">
+      <label  style="text-align: center;font-size:1.1em ;">User Login</label>
+
+      <label>Email</label>
+      <input type="text" name="email" [(ngModel)]="user.email" />
+      <label>Password</label>
+      <input type="password" name="password" [(ngModel)]="user.password" />
+      <button (click)="login()">Login</button>
+      <br />
+      <p>Don't have an account?</p>
+      <a class="sign-up" (click)="toggleSignup()">SignUp</a>
+    </div>
+
+    <div *ngIf="adminDiv" class="add-bus-form">
+      <label  style="text-align: center;font-size:1.1em ;">Admin Login</label>
+      <label>Email</label>
+      <input type="text" name="email" [(ngModel)]="user.email" />
+      <label>Password</label>
+      <input type="password" name="password" [(ngModel)]="user.password" />
+      <button (click)="adminLogin()">Login</button>
+    </div>
+  </body>
