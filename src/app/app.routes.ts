@@ -6,12 +6,12 @@ import { UserPanelComponent } from './user-panel/user-panel.component';
 import { NgModule } from '@angular/core';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/login', pathMatch: 'full' }, 
+    { path: '', redirectTo: 'login', pathMatch: 'full' }, 
     { path: 'app', component: AppComponent }, 
     { path: 'adminpanel', component: AdminPanelComponent },
     { path: 'userpanel', component: UserPanelComponent },
     { path: 'login', component: LoginComponent },
-    { path: '**', redirectTo: '/login' } 
+    { path: '**', redirectTo: 'login' } 
 
 ];
 @NgModule({

@@ -47,7 +47,6 @@ export class LoginComponent {
         if (next == true) {
           this.adminDiv = false;
           this.router.navigateByUrl('adminpanel');
-          alert('Welcome ' + this.user.name);
         } else {
           alert('Wrong Credentials');
           window.location.reload();
@@ -85,7 +84,6 @@ export class LoginComponent {
       .subscribe((next) => {
         if (next) {
           this.router.navigateByUrl('userpanel');
-          alert('Welcome ' + this.user.name);
 
         } else {
           alert('Please Create Account..!');
