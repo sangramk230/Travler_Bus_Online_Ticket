@@ -1,31 +1,22 @@
-import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterOutlet, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import {  Router } from '@angular/router';
 import { BusService, Checkbus, Ticket, TicketDetails } from '../bus.service';
 import { User } from '../login.service';
-import razorpay from 'razorpay';
-import { filter } from 'rxjs';
+import { Location } from '@angular/common';
+
 declare var Razorpay: any;
+
 @Component({
   selector: 'app-user-panel',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet],
+  standalone: false,
   templateUrl: './user-panel.component.html',
-  styleUrl: './user-panel.component.css',
+  styleUrls: ['./user-panel.component.css'],
 })
 export class UserPanelComponent {
   ticketAll: Ticket = new Ticket(0, '', '', '', new Date(), 1, '', 0, 0, '');
-  checkbus: Checkbus = new Checkbus(0, '', '',0, '', '', 0, new Date(), '', '');
+  checkbus: Checkbus = new Checkbus(0, '', '', 0, '', '', 0, new Date(), '', '');
   user: User = new User(0, '', '', '', '', '', '', '');
-  locations: string[] = [
-    'Baramati',
-    'Phaltan',
-    'Satara',
-    'Mahableshwar',
-    'Mumbai',
-    'Pune',
-  ];
+  locations: string[] = ['Baramati', 'Phaltan', 'Satara', 'Mahableshwar', 'Mumbai', 'Pune'];
   uy: User[] = [];
   checkbusAll: Checkbus[] = [];
   tt: TicketDetails[] = [];
@@ -37,19 +28,24 @@ export class UserPanelComponent {
   showFiveDiv: boolean = false;
   showSixDiv: boolean = false;
   ch: boolean = true;
-  currentDate: string ='';
+  currentDate: string = '';
 
-
-  constructor(private busService: BusService, private router: Router) {
+  constructor(private busService: BusService, private router: Router,private loc: Location) {
     this.allBus();
     this.setCurrentDate();
-
   }
-setCurrentDate() {
-  const today = new Date();
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-  this.currentDate = today.toLocaleDateString('en-US',options);
-}
+
+  cancel() {
+    
+ window.location.reload();
+    
+  } 
+  setCurrentDate() {
+    const today = new Date();
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    this.currentDate = today.toLocaleDateString('en-US', options);
+  }
+
   toggleview() {
     this.viewTicket();
     this.showThirdDiv = false;
@@ -59,6 +55,7 @@ setCurrentDate() {
     this.showFiveDiv = false;
     this.showSixDiv = false;
   }
+
   toggleAddTicket() {
     this.allBus();
     this.showThirdDiv = true;
@@ -68,6 +65,7 @@ setCurrentDate() {
     this.showFiveDiv = false;
     this.showSixDiv = false;
   }
+
   toggleProfile() {
     this.profile();
     this.showThirdDiv = false;
@@ -90,9 +88,7 @@ setCurrentDate() {
   }
 
   cancelTicket(pid: number): void {
-    const confirmCancel = window.confirm(
-      'Are you sure you want to cancel this ticket?'
-    );
+    const confirmCancel = window.confirm('Are you sure you want to cancel this ticket?');
     if (!confirmCancel) {
       return;
     }
@@ -106,11 +102,12 @@ setCurrentDate() {
       }
     );
   }
+
   ticket(): void {
     this.busService.pass(this.ticketAll).subscribe((response) => {
       if (response) {
         alert('Ticket booked successfully');
-        window.location.reload();
+        this.router.navigateByUrl('userpanel');
       } else {
         alert('Error of Buy Ticket.');
       }
@@ -118,12 +115,11 @@ setCurrentDate() {
   }
 
   createTicketTranscation(price: number) {
-    this.busService
-      .createTicketTranscation(price)
-      .subscribe((response: any) => {
-        this.openTranscation(response);
-      });
+    this.busService.createTicketTranscation(price).subscribe((response: any) => {
+      this.openTranscation(response);
+    });
   }
+
   openTranscation(response: any) {
     var options = {
       payment: response.paymentid,
@@ -156,6 +152,7 @@ setCurrentDate() {
     var razorpayobj = new Razorpay(options);
     razorpayobj.open();
   }
+
   checkSeat(firstlocation: string, lastlocation: string, bustype: string) {
     this.busService.check(firstlocation, lastlocation, bustype).subscribe(
       (data: Checkbus[]) => {
@@ -173,11 +170,11 @@ setCurrentDate() {
             this.ch = false;
           } else {
             this.showSecondDiv = false;
-            this. toggleAddTicket();            
+            this.toggleAddTicket();
             alert('No available bus for the selected route and date.');
           }
         } else {
-          this. toggleAddTicket();            
+          this.toggleAddTicket();
           this.showSecondDiv = false;
           alert('No buses found for the selected route and date.');
         }
@@ -187,10 +184,12 @@ setCurrentDate() {
       }
     );
   }
+
   updatePrice() {
     this.ticketAll.price = this.ticketAll.addseat * this.checkbus.price;
     this.ticketAll.price = Math.max(this.ticketAll.price, 0);
   }
+
   allBus() {
     this.busService.allBus().subscribe((data: Checkbus[]) => {
       if (data && data.length > 0 && data[0].status !== 'Invalid') {
@@ -202,12 +201,14 @@ setCurrentDate() {
       }
     });
   }
+
   profile() {
     this.busService.profile().subscribe((data: User[]) => {
-      if (data.length > 0) {
+      if (data) {
         this.uy = data;
       } else {
         alert('No user found. Please login.');
+        this.router.navigateByUrl('login');
       }
     });
   }

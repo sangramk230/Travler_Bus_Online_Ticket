@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginService, User } from '../login.service';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet],
+  standalone: false,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   user: User = new User(0, '', '', '', '', '', '', '');
@@ -50,6 +47,7 @@ export class LoginComponent {
         if (next == true) {
           this.adminDiv = false;
           this.router.navigateByUrl('adminpanel');
+          alert('Welcome ' + this.user.name);
         } else {
           alert('Wrong Credentials');
           window.location.reload();
@@ -87,6 +85,8 @@ export class LoginComponent {
       .subscribe((next) => {
         if (next) {
           this.router.navigateByUrl('userpanel');
+          alert('Welcome ' + this.user.name);
+
         } else {
           alert('Please Create Account..!');
           this.toggleSignup();

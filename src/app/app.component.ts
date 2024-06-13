@@ -6,10 +6,9 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'app-root',
-    standalone: true,
+    standalone: false,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [CommonModule, RouterOutlet, FormsModule]
 })
 export class AppComponent  {
  

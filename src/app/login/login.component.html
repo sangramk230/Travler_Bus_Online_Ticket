@@ -2,7 +2,7 @@
     <nav>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#home">Bus Pass</a>
+          <a class="nav-link active" data-toggle="tab">Bus Pass</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab"  (click)="toggleAdmin()">Admin</a>
@@ -10,9 +10,6 @@
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab"  (click)="toggleLogin()" >User</a>
         </li> 
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab"  href="#home" >Help</a>
-        </li>
       </ul>
     </nav>
 
@@ -97,4 +94,12 @@
       <input type="password" name="password" [(ngModel)]="user.password" />
       <button (click)="adminLogin()">Login</button>
     </div>
+<footer class="container-fluid text-center" style="padding-bottom: 5%;">
+  
+  <p>Contact Information</p>
+        <p>Email: info.com</p>
+        <p>Phone: +1234567890</p>
+        <p>Address: 123 Main Street, City, Country</p>
+</footer>
+    
   </body>

@@ -1,19 +1,13 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
-import { AppComponent } from '../app.component';
-import { LoginService, User } from '../login.service';
+import {  User } from '../login.service';
 import { Admin, AdminService } from '../admin.service';
 import { BusService, Checkbus, Ticket, TicketDetails } from '../bus.service';
-import { raceWith } from 'rxjs';
 
 @Component({
   selector: 'app-admin-panel',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule],
+  standalone: false,
   templateUrl: './admin-panel.component.html',
-  styleUrl: './admin-panel.component.css',
+  styleUrls:['./admin-panel.component.css'],
 })
 export class AdminPanelComponent {
   adminTT: Admin[] = [];
