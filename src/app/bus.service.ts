@@ -9,29 +9,29 @@ export class BusService {
 
   constructor(private http:HttpClient) { }
   pass(ticket:Ticket ){
-    return this.http.post("http://localhost:8080/api/ticket/add",ticket);
+    return this.http.post("https://sparkling-truth-production.up.railway.app/api/ticket/add",ticket);
 
   }
   cancelTicket(pid:number){
-    return this.http.delete(`http://localhost:8080/api/ticket/cancel/${pid}`);
+    return this.http.delete(`https://sparkling-truth-production.up.railway.app/api/ticket/cancel/${pid}`);
   }
   viewTicket(): Observable<any[]> {
-    return this.http.get<any[]>("http://localhost:8080/api/ticket/view");
+    return this.http.get<any[]>("https://sparkling-truth-production.up.railway.app/api/ticket/view");
   }
   viewTicketByPid(pid:number): Observable<any[]> {
-    return this.http.get<any[]>("http://localhost:8080/api/ticket/viewtpid/"+pid);
+    return this.http.get<any[]>("https://sparkling-truth-production.up.railway.app/api/ticket/viewtpid/"+pid);
   }
   check(from: string, to: string,bustype:string): Observable<any[]> {
-    return this.http.get<any[]>(`http://localhost:8080/api/checkbus/check/${from}/${to}/${bustype}`);
+    return this.http.get<any[]>(`https://sparkling-truth-production.up.railway.app/api/checkbus/check/${from}/${to}/${bustype}`);
   }
   createTicketTranscation(amount:number) {
-    return this.http.get("http://localhost:8080/api/payment/createTicket/"+amount)
+    return this.http.get("https://sparkling-truth-production.up.railway.app/api/payment/createTicket/"+amount)
   }
   allBus(): Observable<any[]> {
-    return this.http.get<any[]>("http://localhost:8080/api/checkbus/allbus")
+    return this.http.get<any[]>("https://sparkling-truth-production.up.railway.app/api/checkbus/allbus")
   }
   profile(): Observable<any[]> {
-    return this.http.get<any[]>("http://localhost:8080/api/user/profileUser")
+    return this.http.get<any[]>("https://sparkling-truth-production.up.railway.app/api/user/profileUser")
   }
 }
 export class Checkbus {

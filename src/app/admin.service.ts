@@ -12,31 +12,31 @@ export class AdminService {
   constructor(private http:HttpClient) { }
 
   viewUser():Observable<any[]>{
-    return this.http.get<any[]>("http://localhost:8080/api/admin/viewuser");
+    return this.http.get<any[]>("https://sparkling-truth-production.up.railway.app/api/admin/viewuser");
   }
   adminView(id:number){
-    return this.http.get<any[]>("http://localhost:8080/api/admin/adminview/"+id);
+    return this.http.get<any[]>("https://sparkling-truth-production.up.railway.app/api/admin/adminview/"+id);
   }
   addbus(bus:Checkbus):Observable<Checkbus> {
-    return this.http.post<Checkbus>("http://localhost:8080/api/checkbus/addbus",bus);
+    return this.http.post<Checkbus>("https://sparkling-truth-production.up.railway.app/api/checkbus/addbus",bus);
   }
   getPendingTickets():Observable<Admin[]> {
-    return this.http.get<Admin[]>("http://localhost:8080/api/admin/pendingtickets");
+    return this.http.get<Admin[]>("https://sparkling-truth-production.up.railway.app/api/admin/pendingtickets");
   }
   approveTicket(pid:number,phoneno:string){
-    return this.http.put("http://localhost:8080/api/admin/approveticket/"+pid+"/"+phoneno,null);
+    return this.http.put("https://sparkling-truth-production.up.railway.app/api/admin/approveticket/"+pid+"/"+phoneno,null);
   }
   rejectTicket(pid:number,phoneno:string){
-    return this.http.put("http://localhost:8080/api/admin/rejectticket/"+pid+"/"+phoneno,null);
+    return this.http.put("https://sparkling-truth-production.up.railway.app/api/admin/rejectticket/"+pid+"/"+phoneno,null);
   }
   allBus(): Observable<Checkbus[]> {
-    return this.http.get<Checkbus[]>("http://localhost:8080/api/checkbus/allbus")
+    return this.http.get<Checkbus[]>("https://sparkling-truth-production.up.railway.app/api/checkbus/allbus")
   }
   cancelBus(busid:number){
-    return this.http.delete(`http://localhost:8080/api/admin/cancelbus/${busid}`)
+    return this.http.delete(`https://sparkling-truth-production.up.railway.app/api/admin/cancelbus/${busid}`)
   }
   profile(): Observable<User[]> {
-    return this.http.get<User[]>("http://localhost:8080/api/admin/profileAdmin")
+    return this.http.get<User[]>("https://sparkling-truth-production.up.railway.app/api/admin/profileAdmin")
   }
 }
 export class Admin{
