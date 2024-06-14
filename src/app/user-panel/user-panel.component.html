@@ -92,8 +92,8 @@
     </div>
   </div>
 
-  <div class="container-table" *ngIf="checkbus && showSecondDiv && ch">
-    <table>
+  <div  *ngIf="checkbus && showSecondDiv && ch">
+    <table class="container-table">
       <tr *ngFor="let ticketDetail of checkbusAll.slice(0, 6)">
         <th *ngIf="ticketDetail.avilableseat > 0 && ticketDetail.status !== 'Invalid'">
           <img src="/assets/table.png" />
