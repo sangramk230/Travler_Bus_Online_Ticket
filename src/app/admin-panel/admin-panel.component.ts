@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import {  User } from '../login.service';
+import { User } from '../login.service';
 import { Admin, AdminService } from '../admin.service';
 import { BusService, Checkbus, Ticket, TicketDetails } from '../bus.service';
 
 @Component({
   selector: 'app-admin-panel',
-  standalone: false,
   templateUrl: './admin-panel.component.html',
-  styleUrls:['./admin-panel.component.css'],
+  styleUrls: ['./admin-panel.component.css'],
 })
 export class AdminPanelComponent {
   adminTT: Admin[] = [];
@@ -33,7 +32,7 @@ export class AdminPanelComponent {
   showSixDiv: boolean = false;
   tt: boolean = true;
   hh: boolean = true;
-  currentDate: string ='';
+  currentDate: string = '';
 
   constructor(
     private adminService: AdminService,
@@ -42,11 +41,13 @@ export class AdminPanelComponent {
     this.toggleViewBus();
     this.setCurrentDate();
   }
-setCurrentDate() {
-  const today = new Date();
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-  this.currentDate = today.toLocaleDateString('en-US',options);
-}
+
+  setCurrentDate() {
+    const today = new Date();
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    this.currentDate = today.toLocaleDateString('en-US', options);
+  }
+
   toggleViewBus() {
     this.allBus();
     this.showThirdDiv = false;
@@ -68,6 +69,7 @@ setCurrentDate() {
     this.showSixDiv = false;
     this.tt = false;
   }
+
   toggleAddBus() {
     this.showFiveDiv = true;
     this.showFourthDiv = false;
@@ -77,6 +79,7 @@ setCurrentDate() {
     this.showSixDiv = false;
     this.tt = false;
   }
+
   toggleProfile() {
     this.profile();
     this.showThirdDiv = false;
@@ -87,32 +90,26 @@ setCurrentDate() {
     this.showSixDiv = true;
     this.tt = false;
   }
+
   addbus() {
     if (!this.checkbus) {
       alert('Please fill all data');
       return;
     }
     this.adminService.addbus(this.checkbus).subscribe(
-      () => {
-        if (this.checkbus != null) {
-          alert('Bus added successfully');
-          window.location.reload();
-        } else {
-          alert(
-            'An error occurred while adding the bus. Please try again later.'
-          );
-        }
+      (response) => {
+        alert('Bus added successfully');
+        window.location.reload();
       },
       (error) => {
         console.error('Error while adding bus:', error);
-        alert(
-          'An error occurred while adding the bus. Please try again later.'
-        );
+        alert('An error occurred while adding the bus. Please try again later.');
       }
     );
   }
+
   viewUsers() {
-    this.adminService.viewUser().subscribe((data: any[]) => {
+    this.adminService.viewUser().subscribe((data: User[]) => {
       if (data && data.length > 0) {
         this.showFirstDiv = true;
         this.showFourthDiv = false;
@@ -121,16 +118,16 @@ setCurrentDate() {
         this.showFiveDiv = false;
         this.showSixDiv = false;
         this.tt = false;
-
         this.user = data;
       } else {
-        alert('no User ');
+        alert('No User found');
       }
     });
   }
+
   adminView(id: number): void {
     this.adminService.adminView(id).subscribe(
-      (data: any[]) => {
+      (data: Admin[]) => {
         if (data && data.length > 0) {
           this.showSecondDiv = true;
           this.showThirdDiv = false;
@@ -138,7 +135,6 @@ setCurrentDate() {
           this.showFourthDiv = false;
           this.showFiveDiv = false;
           this.tt = false;
-
           this.adminTT = data;
           this.ticketDetails[0].ticket.id = this.usert.id;
         } else {
@@ -151,18 +147,15 @@ setCurrentDate() {
       }
     );
   }
+
   cancelTicket(pid: number): void {
-    const confirmCancel = window.confirm(
-      'Are you sure you want to cancel this ticket?'
-    );
+    const confirmCancel = window.confirm('Are you sure you want to cancel this ticket?');
     if (!confirmCancel) {
       return;
     }
     this.busService.cancelTicket(pid).subscribe(
       () => {
-        this.ticketDetails = this.ticketDetails.filter(
-          (ticket) => ticket.ticket.pid !== pid
-        );
+        this.ticketDetails = this.ticketDetails.filter(ticket => ticket.ticket.pid !== pid);
         window.alert('Your ticket has been cancelled successfully!');
       },
       (error) => {
@@ -170,103 +163,102 @@ setCurrentDate() {
       }
     );
   }
+
   checkContactLength() {
     if (this.checkbus.contact.length > 10) {
       this.checkbus.contact = this.checkbus.contact.substring(0, 10);
-  
     }
   }
+
   getPendingTickets() {
     this.adminService.getPendingTickets().subscribe(
-      (data: any[]) => {
+      (data: Admin[]) => {
         this.showSecondDiv = false;
         this.showThirdDiv = true;
         this.showFirstDiv = false;
         this.showFourthDiv = false;
         this.showFiveDiv = false;
         this.tt = false;
-
         this.adminTT = data;
       },
       (error) => {
-        console.error('Error occurred while fetching user tickets:', error);
+        console.error('Error occurred while fetching pending tickets:', error);
       }
     );
   }
+
   approveTicket(pid: number, phoneno: string) {
-    this.adminService.approveTicket(pid, phoneno).subscribe((data) => {
-      if (data && data != null) {
-        this.ticketDetails = this.ticketDetails.filter(
-          (ticket) => ticket.ticket.checkstatus !== 'Approved'
-        );
-        alert('Ticket approved');
-        this.adminTT.forEach((tr) => {
+    this.adminService.approveTicket(pid, phoneno).subscribe(
+      (data) => {
+        this.adminTT.forEach(tr => {
           if (tr.ticket.pid === pid) {
             tr.ticket.checkstatus = 'Approved';
           }
         });
-      } else {
-        alert('No Tickets Found');
+        alert('Ticket approved');
+      },
+      (error) => {
+        console.error('Error approving ticket:', error);
+        alert('An error occurred while approving the ticket. Please try again later.');
       }
-    });
+    );
   }
+
   rejectTicket(pid: number, phoneno: string) {
-    this.adminService.rejectTicket(pid, phoneno).subscribe((data) => {
-      if (data) {
-        this.ticketDetails = this.ticketDetails.filter(
-          (tp) => tp.ticket.checkstatus !== 'Rejected'
-        );
-        alert('Ticket Rejected');
-        this.adminTT.forEach((tr) => {
+    this.adminService.rejectTicket(pid, phoneno).subscribe(
+      (data) => {
+        this.adminTT.forEach(tr => {
           if (tr.ticket.pid === pid) {
             tr.ticket.checkstatus = 'Rejected';
           }
         });
-      } else {
-        alert('Ticket not Rejected');
+        alert('Ticket rejected');
+      },
+      (error) => {
+        console.error('Error rejecting ticket:', error);
+        alert('An error occurred while rejecting the ticket. Please try again later.');
       }
-    });
+    );
   }
+
   allBus() {
     this.adminService.allBus().subscribe((data: Checkbus[]) => {
-      this.checkbusAll = this.checkbusAll.filter(
-        (checkbus) => checkbus.status === 'valid'
-      );
       if (data && data.length > 0) {
         this.tt = true;
-        this.checkbusAll = data;
+        this.checkbusAll = data.filter(checkbus => checkbus.status === 'valid');
         console.log(this.checkbusAll);
       }
     });
   }
+
   cancelBus(busid: number): void {
-    const confirmCancel = window.confirm(
-      'Are you sure you want to cancel this ticket?'
-    );
+    const confirmCancel = window.confirm('Are you sure you want to cancel this bus?');
     if (!confirmCancel) {
       return;
     }
     this.adminService.cancelBus(busid).subscribe(
       () => {
-        this.checkbusAll = this.checkbusAll.filter(
-          (checkbus) => checkbus.busid !== busid
-        );
-        window.alert('Your ticket has been cancelled successfully!');
+        this.checkbusAll = this.checkbusAll.filter(checkbus => checkbus.busid !== busid);
+        window.alert('Bus has been cancelled successfully!');
       },
       (error) => {
-        window.alert('Error canceling ticket. Please try again.');
+        window.alert('Error canceling bus. Please try again.');
       }
     );
   }
+
   profile() {
     this.adminService.profile().subscribe(
-      (data: any[]) => {
-      if (data) {
-        this.user=data;
-        console.log(this.usert);
-      } else {
-        alert('No user found. Please login.');
+      (data: User[]) => {
+        if (data) {
+          this.user = data;
+        } else {
+          alert('No user found. Please login.');
+        }
+      },
+      (error) => {
+        console.error('Error occurred while fetching profile:', error);
       }
-    });
+    );
   }
 }
